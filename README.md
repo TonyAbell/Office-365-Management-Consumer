@@ -46,10 +46,13 @@ Follow the instructions [here](https://support.office.com/en-us/article/Find-you
 
 For more information review this [link](https://msdn.microsoft.com/office-365/get-started-with-office-365-management-apis#office-365-tenant-admin-consent)
 
-Update '{your_client_id}' in this URL
-`
+Update '{your_client_id}' in this URL.  The Client ID is the same as the Azure AD Application ID you created in the steps above.
+
+```
+
 https://login.windows.net/common/oauth2/authorize?response_type=code&resource=https%3A%2F%2Fmanage.office.com&client_id={your_client_id}&redirect_uri=http%3A%2F%2Flocalhost
-`
+
+```
 
 Have an Office 365 Admin Browse to the updated url and accept the permissions.
 
