@@ -48,7 +48,7 @@ For more information review this [link](https://msdn.microsoft.com/office-365/ge
 
 Update '{your_client_id}' in this URL
 `
-https://login.windows.net/common/oauth2/authorize?response_type=code&resource=https%3A%2F%2Fmanage.office.com&client_id={your_client_id}&redirect_uri=http%3A%2F%2Flocalhost }
+https://login.windows.net/common/oauth2/authorize?response_type=code&resource=https%3A%2F%2Fmanage.office.com&client_id={your_client_id}&redirect_uri=http%3A%2F%2Flocalhost
 `
 
 Have an Office 365 Admin Browse to the updated url and accept the permissions.
