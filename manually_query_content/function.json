@@ -11,7 +11,7 @@
       "databaseName": "content",
       "collectionName": "content_metadata",
       "createIfNotExists": false,
-      "connection": "esripowerbi_DOCUMENTDB",
+      "connection": "DOCUMENTDB",
       "direction": "out"
     }
   ],

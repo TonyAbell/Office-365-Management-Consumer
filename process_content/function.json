@@ -5,7 +5,7 @@
       "name": "input",
       "direction": "in",
       "leaseCollectionName": "leases",
-      "connectionStringSetting": "esripowerbi_DOCUMENTDB",
+      "connectionStringSetting": "DOCUMENTDB",
       "databaseName": "content",
       "collectionName": "content_metadata",
       "createLeaseCollectionIfNotExists": true
@@ -16,7 +16,7 @@
       "databaseName": "content",
       "collectionName": "content_data",
       "createIfNotExists": false,
-      "connection": "esripowerbi_DOCUMENTDB",
+      "connection": "DOCUMENTDB",
       "direction": "out"
     }
   ],
