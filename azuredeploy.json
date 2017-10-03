@@ -1,0 +1,158 @@
+{
+    "parameters": {
+        "appName": {
+            "type": "string"
+        },
+        "ClientId": {
+            "type": "string"
+        },
+        "ClientSecret": {
+            "type": "string"
+        },
+        "Tenantid": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "functionAppName": "[concat(parameters('appName'), '-', substring(uniquestring(resourceGroup().id), 0, 6))]",
+        "hostingPlanName": "[concat(parameters('appName'), '-',substring(uniquestring(resourceGroup().id), 0, 6))]",
+        "cosmosDbName": "[concat(parameters('appName'), '-',substring(uniquestring(resourceGroup().id), 0, 6))]",
+        "storageAccountName": "[concat(parameters('appName'), substring(uniquestring(resourceGroup().id), 0, 6))]",
+        "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2016-01-01",
+            "name": "[variables('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "kind": "Storage",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "location": "[resourceGroup().location]"
+        },
+        {
+            "type": "Microsoft.DocumentDB/databaseAccounts",
+            "kind": "GlobalDocumentDB",
+            "name": "[variables('cosmosDbName')]",
+            "apiVersion": "2015-04-08",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "defaultExperience": "DocumentDB"
+            },
+            "scale": null,
+            "properties": {
+                "databaseAccountOfferType": "Standard",
+                "consistencyPolicy": {
+                    "defaultConsistencyLevel": "Session",
+                    "maxIntervalInSeconds": 5,
+                    "maxStalenessPrefix": 100
+                },
+                "name": "[variables('cosmosDbName')]"
+            },
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "sku": {
+                "name": "Y1",
+                "tier": "Dynamic",
+                "size": "Y1",
+                "family": "Y",
+                "capacity": 0
+            },
+            "kind": "functionapp",
+            "name": "[variables('hostingPlanName')]",
+            "apiVersion": "2016-09-01",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "name": "[variables('hostingPlanName')]"
+            },
+            "dependsOn": []
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "kind": "functionapp",
+            "name": "[variables('functionAppName')]",
+            "apiVersion": "2016-08-01",
+            "location": "[resourceGroup().location]",
+            "scale": null,
+            "properties": {
+                "enabled": true,
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+                "reserved": false,
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "AzureWebJobsDashboard",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                        },
+                        {
+                            "name": "WEBSITE_CONTENTSHARE",
+                            "value": "[toLower(variables('functionAppName'))]"
+                        },
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~1"
+                        },
+                        {
+                            "name": "WEBSITE_NODE_DEFAULT_VERSION",
+                            "value": "6.5.0"
+                        },
+                        {
+                            "name": "ClientId",
+                            "value": "[parameters('ClientId')]"
+                        },
+                        {
+                            "name": "ClientSecret",
+                            "value": "[parameters('ClientSecret')]"
+                        },
+                        {
+                            "name": "Tenantid",
+                            "value": "[parameters('Tenantid')]"
+                        },
+                        {
+                            "name": "PublisherIdentifier",
+                            "value": "[uniquestring(resourceGroup().id)]"
+                        },
+                        {
+                            "name": "DOCUMENTDB",
+                            "value": "[concat('AccountEndpoint=https://',variables('cosmosDbName'),'.documents.azure.com:443/;AccountKey=', listKeys(resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName')), '2015-11-06').primaryMasterKey)]"
+                        }
+                    ]
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('cosmosDbName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+            ],
+            "resources": [
+                {
+                    "apiVersion": "2015-08-01",
+                    "name": "web",
+                    "type": "sourcecontrols",
+                    "dependsOn": [
+                        "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]"
+                    ],
+                    "properties": {
+                        "RepoUrl": "https://github.com/TonyAbell/Office-365-Management-Consumer.git",
+                        "branch": "master",
+                        "IsManualIntegration": true
+                    }
+                }
+            ]
+        }
+    ],
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0"
+}
