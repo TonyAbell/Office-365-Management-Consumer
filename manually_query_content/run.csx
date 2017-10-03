@@ -1,4 +1,5 @@
 #r "NewtonSoft.Json"
+#r "Microsoft.Azure.Documents.Client"
 using System;
 using System.Configuration;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
