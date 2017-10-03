@@ -1,4 +1,3 @@
-#r "Microsoft.IdentityModel.Clients.ActiveDirectory"
 #r "NewtonSoft.Json"
 using System;
 using System.Collections.Generic;
