@@ -20,4 +20,4 @@ Follow the instructions in the link below to get your Office 365 Tenant Id
 
 
 
- [![Deploy to Azure](http://azuredeploy.net/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/TonyAbell/Office-365-Management-Consumer/master/azuredeploy.json)
+ [![Deploy to Azure](http://azuredeploy.net/deploybutton.svg)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FTonyAbell%2FOffice-365-Management-Consumer%2Fmaster%2Fazuredeploy.json)
