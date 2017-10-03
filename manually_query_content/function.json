@@ -9,8 +9,8 @@
       "type": "documentDB",
       "name": "metadata",
       "databaseName": "content",
-      "collectionName": "content_metadata",
-      "createIfNotExists": false,
+      "collectionName": "metadata",
+      "createIfNotExists": true,
       "connection": "DOCUMENTDB",
       "direction": "out"
     }

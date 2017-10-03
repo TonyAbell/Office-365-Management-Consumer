@@ -7,17 +7,18 @@
       "leaseCollectionName": "leases",
       "connectionStringSetting": "DOCUMENTDB",
       "databaseName": "content",
-      "collectionName": "content_metadata",
+      "collectionName": "metadata",
       "createLeaseCollectionIfNotExists": true
     },
     {
       "type": "documentDB",
       "name": "data",
       "databaseName": "content",
-      "collectionName": "content_data",
-      "createIfNotExists": false,
+      "collectionName": "data",
+      "createIfNotExists": true,
       "connection": "DOCUMENTDB",
       "direction": "out"
+   
     }
   ],
   "disabled": false
