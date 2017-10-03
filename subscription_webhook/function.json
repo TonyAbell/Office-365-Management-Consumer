@@ -1,0 +1,25 @@
+{
+  "bindings": [
+    {
+      "type": "httpTrigger",
+      "direction": "in",
+      "webHookType": "genericJson",
+      "name": "req"
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "res"
+    },
+    {
+      "type": "documentDB",
+      "name": "metadata",
+      "databaseName": "content",
+      "collectionName": "content_metadata",
+      "createIfNotExists": false,
+      "connection": "esripowerbi_DOCUMENTDB",
+      "direction": "out"
+    }
+  ],
+  "disabled": false
+}
