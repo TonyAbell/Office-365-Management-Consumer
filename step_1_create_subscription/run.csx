@@ -27,18 +27,17 @@ public async static Task Run(string input, TraceWriter log)
     var client = new WebClient();
     client.Headers.Add("Authorization", $"Bearer {authenticationResult.AccessToken}");
     client.Headers.Add("Content-Type", "application/json; utf-8");
-    var body = JObject.FromObject(new { webhook = new { address = "https://requestb.in/tn8u4gtn" } });
+    var body = JObject.FromObject(new { webhook = new { address = "" } });
     var bodyStr = body.ToString(Newtonsoft.Json.Formatting.Indented);
 
     try
     {
-        var result = client.UploadData(startSubscriptionsUrl, "POST", System.Text.ASCIIEncoding.UTF8.GetBytes(bodyStr));
+        var result = client.UploadString(startSubscriptionsUrl, "POST", bodyStr);
 
     }
     catch (WebException ex)
     {
         var response = new System.IO.StreamReader(ex.Response.GetResponseStream());
-        Console.WriteLine(response.ReadToEnd());
+        log.Info(response);
     }
-
 }
