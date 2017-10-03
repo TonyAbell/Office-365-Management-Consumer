@@ -20,6 +20,24 @@ Take note of the following and save for later
 - The Application Id is the Client Id
 - The Key is the Client Secret
 
+Set the AD Application Permissions
+
+Navigate to the AD Application Permissions Pane
+
+![](/readme-imgs/ad_permissions.png)
+
+Add API the the AD Application
+
+![](/readme-imgs/ad_permissions_add_api.png)
+
+Select Management API
+
+![](/readme-imgs/ad_permissions_select_managment_api.png)
+
+Select Permissions 
+
+![](/readme-imgs/ad_permissions_select_permissions.png)
+
 ### Get the Office 365 Tenant Id
 
 Follow the instructions [here](https://support.office.com/en-us/article/Find-your-Office-365-tenant-ID-6891b561-a52d-4ade-9f39-b492285e2c9b) to get your Office 365 Tenant Id
@@ -44,6 +62,15 @@ Have an Office 365 Admin Browse to the updated url and accept the permissions.
 ### Option 2
 
 Run the following script.
+```
+az login
+$rg="my-rg"
+az group create --name $rg --location WestUS2
+az group deployment validate  --resource-group $rg --template-uri 
+"https://raw.githubusercontent.com/TonyAbell/Office-365-Management-Consumer/master/azuredeploy.json" --parameters appName={app name} --parameters ClientId={client id} --parameters ClientSecret={client secret} --parameters Tenantid={tenant id}
+//remove source control deployment from project
+az webapp deployment source delete -g $rg -n {generated app name}
+```
 
 ## Run step_1_create_subscription
 
