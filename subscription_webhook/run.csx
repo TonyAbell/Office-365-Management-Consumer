@@ -7,16 +7,25 @@ using Newtonsoft.Json.Linq;
 
 public static async Task<object> Run(HttpRequestMessage req, IAsyncCollector<object> metadata, TraceWriter log)
 {
+
     log.Info($"Webhook was triggered!");
 
     string jsonContent = await req.Content.ReadAsStringAsync();
-    JArray array = JArray.Parse(jsonContent);
+    log.Info(jsonContent);
+    var token = JToken.Parse(jsonContent);
 
-    foreach (JObject item in array)
+    if (token is JArray)
     {
-        item.Add("id", item["contentId"]);
-        await metadata.AddAsync(item);
-
+        JArray array = JArray.Parse(jsonContent);
+        foreach (JObject item in array)
+        {
+            item.Add("id", item["contentId"]);
+            await metadata.AddAsync(item);
+        }
+    }
+    else if (token is JObject)
+    {
+        log.Info($"Validation Request !");
     }
     log.Info($"Done!");
 
