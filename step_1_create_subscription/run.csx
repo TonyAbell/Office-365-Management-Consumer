@@ -37,7 +37,7 @@ public async static Task Run(string input, TraceWriter log)
     }
     catch (WebException ex)
     {
-        var response = new System.IO.StreamReader(ex.Response.GetResponseStream());
+        var response = new System.IO.StreamReader(ex.Response.GetResponseStream()).ReadToEnd();
         log.Info(response);
     }
 }
