@@ -12,7 +12,7 @@ public static async Task<object> Run(HttpRequestMessage req, IAsyncCollector<obj
     string jsonContent = await req.Content.ReadAsStringAsync();
     JArray array = JArray.Parse(jsonContent);
 
-    foreach (JObject item in jsonArray)
+    foreach (JObject item in array)
     {
         item.Add("id", item["contentId"]);
         await metadata.AddAsync(item);
